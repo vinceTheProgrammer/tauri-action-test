@@ -42,6 +42,28 @@ jobs:
           # Those targets are only used on macos runners so it's in an `if` to slightly speed up windows and linux builds.
           targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
 
+      - name: Install GStreamer dependencies (Ubuntu only)
+        if: matrix.platform == 'ubuntu-22.04'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libgstreamer1.0-dev \
+            libgstreamer-plugins-base1.0-dev \
+            libglib2.0-dev \
+            pkg-config
+
+      - name: Install GStreamer dependencies (macOS only)
+        if: matrix.platform == 'macos-latest'
+        run: |
+          brew update
+          brew install gstreamer gst-plugins-base pkg-config
+
+      - name: Install GStreamer dependencies (Windows only)
+        if: matrix.platform == 'windows-latest'
+        run: |
+          choco install -y gstreamer
+          setx PKG_CONFIG_PATH "C:\gstreamer\1.0\x86_64\lib\pkgconfig"
+
       - name: install dependencies (ubuntu only)
         if: matrix.platform == 'ubuntu-22.04' # This must match the platform value defined above.
         run: |
