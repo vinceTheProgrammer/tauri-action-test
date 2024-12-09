@@ -59,6 +59,11 @@ jobs:
         id: xcrun
         run: echo "SYSROOT=$(xcrun --sdk macosx --show-sdk-path)" >> $GITHUB_ENV
 
+      - name: Install GStreamer dependencies (Windows only)
+        if: matrix.platform == 'windows-latest'
+        run: |
+          choco install -y pkgconfiglite
+
       - name: Set up MSYS2 (Windows only)
         if: matrix.platform == 'windows-latest'
         uses: msys2/setup-msys2@v2
