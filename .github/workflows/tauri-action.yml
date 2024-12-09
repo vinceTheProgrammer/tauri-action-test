@@ -57,7 +57,7 @@ jobs:
       - name: Get macOS SDK sysroot (macOS only)
         if: matrix.platform == 'macos-latest'
         id: xcrun
-        run: echo "::set-output name=sysroot::$(xcrun --sdk macosx --show-sdk-path)"
+        run: echo "SYSROOT=$(xcrun --sdk macosx --show-sdk-path)" >> $GITHUB_ENV
 
       - name: Install GStreamer dependencies (Windows only)
         if: matrix.platform == 'windows-latest'
@@ -94,6 +94,8 @@ jobs:
       - uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PKG_CONFIG_SYSROOT_DIR: $SYSROOT
+          PKG_CONFIG_PATH: "/usr/local/lib/pkgconfig:/usr/lib/pkgconfig"
         with:
           tagName: app-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version.
           releaseName: 'App v__VERSION__'
