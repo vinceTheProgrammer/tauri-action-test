@@ -73,7 +73,9 @@ jobs:
 
       - name: Add MSYS2 to PATH (Windows only)
         if: matrix.platform == 'windows-latest'
-        run: echo "::add-path::C:\\msys64\\mingw64\\bin"
+        shell: bash
+        run: |
+          echo "C:\\msys64\\mingw64\\bin" >> $GITHUB_PATH
 
       - name: install dependencies (ubuntu only)
         if: matrix.platform == 'ubuntu-22.04' # This must match the platform value defined above.
