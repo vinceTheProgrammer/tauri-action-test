@@ -60,6 +60,21 @@ jobs:
           choco install -y gstreamer
           setx PKG_CONFIG_PATH "C:\gstreamer\1.0\x86_64\lib\pkgconfig"
 
+      - name: Set up MSYS2 (Windows only)
+        if: matrix.platform == 'windows-latest'
+        uses: msys2/setup-msys2@v2
+        with:
+          update: true
+          install: >-
+            mingw-w64-x86_64-pkg-config
+            mingw-w64-x86_64-glib2
+            mingw-w64-x86_64-gcc
+          msystem: MINGW64
+
+      - name: Add MSYS2 to PATH (Windows only)
+        if: matrix.platform == 'windows-latest'
+        run: echo "::add-path::C:\\msys64\\mingw64\\bin"
+
       - name: install dependencies (ubuntu only)
         if: matrix.platform == 'ubuntu-22.04' # This must match the platform value defined above.
         run: |
