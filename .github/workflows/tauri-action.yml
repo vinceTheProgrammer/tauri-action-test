@@ -60,6 +60,21 @@ jobs:
           choco install -y gstreamer pkgconfiglite
           setx PKG_CONFIG_PATH "C:\gstreamer\1.0\x86_64\lib\pkgconfig"
 
+      - name: Set up MSYS2 (Windows only)
+        if: matrix.platform == 'windows-latest'
+        uses: msys2/setup-msys2@v2
+        with:
+          update: true
+          install: >-
+            glib2
+          msystem: MSYS
+
+      - name: Add MSYS2 to PATH (Windows only)
+        if: matrix.platform == 'windows-latest'
+        shell: bash
+        run: |
+          echo "C:\\msys64\\msys\\bin" >> $GITHUB_PATH
+
       - name: install dependencies (ubuntu only)
         if: matrix.platform == 'ubuntu-22.04' # This must match the platform value defined above.
         run: |
