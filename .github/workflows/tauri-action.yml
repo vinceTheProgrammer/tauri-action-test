@@ -88,7 +88,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PKG_CONFIG_SYSROOT_DIR: $SYSROOT
-          MSYS_NO_PATHCONV: 1
           PKG_CONFIG_PATH: /c/msys64/mingw64/lib/pkgconfig
         with:
           tagName: app-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version.
