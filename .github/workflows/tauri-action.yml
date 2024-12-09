@@ -73,12 +73,6 @@ jobs:
             pkg-config mingw-w64-x86_64-gstreamer mingw-w64-x86_64-glib2
           msystem: MINGW64
 
-      - name: Add MSYS2 to PATH (Windows only)
-        if: matrix.platform == 'windows-latest'
-        shell: bash
-        run: |
-          echo "PKG_CONFIG_PATH=\"C:/msys64/mingw64/lib/pkgconfig\"" >> $GITHUB_ENV
-
       - name: install dependencies (ubuntu only)
         if: matrix.platform == 'ubuntu-22.04' # This must match the platform value defined above.
         run: |
@@ -94,7 +88,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PKG_CONFIG_SYSROOT_DIR: $SYSROOT
-          PKG_CONFIG_PATH: "/usr/local/lib/pkgconfig:/usr/lib/pkgconfig"
+          PKG_CONFIG_PATH: "C:/msys64/mingw64/lib/pkgconfig"
         with:
           tagName: app-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version.
           releaseName: 'App v__VERSION__'
