@@ -57,7 +57,7 @@ jobs:
       - name: Install GStreamer dependencies (Windows only)
         if: matrix.platform == 'windows-latest'
         run: |
-          choco install -y gstreamer pkgconfiglite
+          choco install -y gstreamer pkgconfiglite gtk-runtime
           setx PKG_CONFIG_PATH "C:\gstreamer\1.0\x86_64\lib\pkgconfig"
 
       - name: Set up MSYS2 (Windows only)
