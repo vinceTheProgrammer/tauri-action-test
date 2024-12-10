@@ -62,16 +62,7 @@ jobs:
       - name: Install GStreamer dependencies (Windows only)
         if: matrix.platform == 'windows-latest'
         run: |
-          choco install -y pkgconfiglite
-
-      - name: Set up MSYS2 (Windows only)
-        if: matrix.platform == 'windows-latest'
-        uses: msys2/setup-msys2@v2
-        with:
-          update: true
-          install: >-
-            pkg-config mingw-w64-x86_64-gstreamer mingw-w64-x86_64-glib2 dos2unix
-          msystem: MINGW64
+          choco install -y pkgconfiglite gtk-runtime gstreamer
 
       - name: install dependencies (ubuntu only)
         if: matrix.platform == 'ubuntu-22.04' # This must match the platform value defined above.
@@ -88,7 +79,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PKG_CONFIG_SYSROOT_DIR: $SYSROOT
-          PKG_CONFIG_PATH: "C:/msys64/mingw64/lib/pkgconfig"
         with:
           tagName: app-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version.
           releaseName: 'App v__VERSION__'
