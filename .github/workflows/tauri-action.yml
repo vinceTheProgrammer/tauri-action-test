@@ -70,7 +70,7 @@ jobs:
         with:
           update: true
           install: >-
-            pkg-config mingw-w64-x86_64-gstreamer mingw-w64-x86_64-glib2
+            pkg-config mingw-w64-x86_64-gstreamer mingw-w64-x86_64-glib2 dos2unix
           msystem: MINGW64
 
       - name: install dependencies (ubuntu only)
