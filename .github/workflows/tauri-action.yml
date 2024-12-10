@@ -59,10 +59,26 @@ jobs:
         id: xcrun
         run: echo "SYSROOT=$(xcrun --sdk macosx --show-sdk-path)" >> $GITHUB_ENV
 
-      - name: Install GStreamer dependencies (Windows only)
+      - name: Set up MSYS2 (Windows only)
         if: matrix.platform == 'windows-latest'
-        run: |
-          choco install -y pkgconfiglite gtk-runtime gstreamer
+        uses: msys2/setup-msys2@v2
+        with:
+          update: true
+          install: >-
+            pkg-config mingw-w64-x86_64-gstreamer mingw-w64-x86_64-glib2
+          msystem: MINGW64
+
+      - name: Add MSYS2 to PATH
+        if: matrix.platform == 'windows-latest'
+        run: echo "C:\msys64\usr\bin" >> $GITHUB_PATH
+
+      - name: Add MSYS2 other to PATH
+        if: matrix.platform == 'windows-latest'
+        run: echo "C:\msys64\mingw64\bin" >> $GITHUB_PATH  
+
+      - name: Add pkgconfig path
+        if: matrix.platform == 'windows-latest'
+        run: echo "PKG_CONFIG_PATH=C:\msys64\mingw64\lib\pkgconfig" >> $GITHUB_ENV
 
       - name: install dependencies (ubuntu only)
         if: matrix.platform == 'ubuntu-22.04' # This must match the platform value defined above.
