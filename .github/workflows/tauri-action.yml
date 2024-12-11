@@ -64,6 +64,7 @@ jobs:
         if: matrix.platform == 'windows-latest'
         uses: msys2/setup-msys2@v2
         with:
+          location: D:\
           update: true
           install: >-
             pkg-config mingw-w64-x86_64-gstreamer mingw-w64-x86_64-glib2
@@ -93,6 +94,18 @@ jobs:
       - name: Display PATH variable
         if: matrix.platform == 'windows-latest'
         run: echo $env:PATH
+        shell: pwsh
+
+      - name: Get msys2 path
+        if: matrix.platform == 'windows-latest'
+        shell: pwsh 
+        run: | 
+          $Env:MSYS2_ROOT = msys2 -c 'cygpath -m /' 
+          $Env:MSYS2_ROOT
+
+      - name: Display msys2_root variable
+        if: matrix.platform == 'windows-latest'
+        run: echo $env:MSYS2_ROOT
         shell: pwsh
 
       - uses: tauri-apps/tauri-action@v0
