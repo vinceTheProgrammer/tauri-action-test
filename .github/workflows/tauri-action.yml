@@ -117,10 +117,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PKG_CONFIG_PATH: /d/msys64/mingw64/lib/pkgconfig
-          LIBRARY_PATH: D:\msys64\mingw64\lib
-          LD_LIBRARY_PATH: D:\msys64\mingw64\lib
-          C_INCLUDE_PATH: D:\msys64\mingw64\include
-          CPLUS_INCLUDE_PATH: D:\msys64\mingw64\include
+          LIBRARY_PATH: D:/msys64/mingw64/lib
+          LD_LIBRARY_PATH: D:/msys64/mingw64/lib
+          C_INCLUDE_PATH: D:/msys64/mingw64/include
+          CPLUS_INCLUDE_PATH: D:/msys64/mingw64/include
         with:
           tagName: app-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version.
           releaseName: 'App v__VERSION__'
