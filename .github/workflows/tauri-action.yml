@@ -47,13 +47,11 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y libunwind-dev libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libgstreamer-plugins-bad1.0-dev gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-libav gstreamer1.0-tools gstreamer1.0-x gstreamer1.0-alsa gstreamer1.0-gl gstreamer1.0-gtk3 gstreamer1.0-qt5 gstreamer1.0-pulseaudio libglib2.0-dev pkg-config
-
       - name: Install GStreamer dependencies (macOS only)
         if: matrix.platform == 'macos-latest'
         run: |
           brew update
           brew install gstreamer gst-plugins-base pkg-config glib
-
       - name: Get macOS SDK sysroot (macOS only)
         if: matrix.platform == 'macos-latest'
         id: xcrun
@@ -68,17 +66,13 @@ jobs:
             pkg-config mingw-w64-x86_64-gstreamer mingw-w64-x86_64-glib2
           msystem: MINGW64
 
-      - name: Add MSYS2 to PATH
+      - name: Set up MSYS2 path
         if: matrix.platform == 'windows-latest'
-        run: echo "C:\msys64\usr\bin" >> $GITHUB_PATH
+        run: echo "C:\msys64\usr\bin" >> "$GITHUB_PATH"
 
-      - name: Add MSYS2 other to PATH
+      - name: Set up MSYS2 path (other)
         if: matrix.platform == 'windows-latest'
-        run: echo "C:\msys64\mingw64\bin" >> $GITHUB_PATH  
-
-      - name: Add pkgconfig path
-        if: matrix.platform == 'windows-latest'
-        run: echo "PKG_CONFIG_PATH=C:\msys64\mingw64\lib\pkgconfig" >> $GITHUB_ENV
+        run: echo "C:\msys64\mingw64\bin" >> "$GITHUB_PATH"
 
       - name: install dependencies (ubuntu only)
         if: matrix.platform == 'ubuntu-22.04' # This must match the platform value defined above.
@@ -95,6 +89,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PKG_CONFIG_SYSROOT_DIR: $SYSROOT
+          MSYS_NO_PATHCONV: 1
+          PKG_CONFIG_PATH: C:/msys64/mingw64/lib/pkgconfig
         with:
           tagName: app-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version.
           releaseName: 'App v__VERSION__'
