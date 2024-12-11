@@ -72,12 +72,12 @@ jobs:
       - name: Set up MSYS2 path
         if: matrix.platform == 'windows-latest'
         shell: bash
-        run: echo "C:\msys64\usr\bin" >> "$GITHUB_PATH"
+        run: echo "${{ steps.msys2.outputs.msys2-location }}\usr\bin" >> "$GITHUB_PATH"
 
       - name: Set up MSYS2 path (other)
         if: matrix.platform == 'windows-latest'
         shell: bash
-        run: echo "C:\msys64\mingw64\bin" >> "$GITHUB_PATH"
+        run: echo "${{ steps.msys2.outputs.msys2-location }}mingw64\bin" >> "$GITHUB_PATH"
 
       - name: install dependencies (ubuntu only)
         if: matrix.platform == 'ubuntu-22.04' # This must match the platform value defined above.
@@ -100,7 +100,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PKG_CONFIG_SYSROOT_DIR: $SYSROOT
           MSYS_NO_PATHCONV: 1
-          PKG_CONFIG_PATH: C:/msys64/mingw64/lib/pkgconfig
+          PKG_CONFIG_PATH: ${{ steps.msys2.outputs.msys2-location }}\mingw64\lib\pkgconfig
         with:
           tagName: app-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version.
           releaseName: 'App v__VERSION__'
