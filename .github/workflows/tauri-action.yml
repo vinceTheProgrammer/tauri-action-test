@@ -125,7 +125,7 @@ jobs:
           echo CPLUS_INCLUDE_PATH=D:/msys64/mingw64/include >> $GITHUB_ENV
 
       - name: Set up environment variables for macOS
-        if: matrix.platform == 'macos-latest'
+        if: matrix.platform == 'macos-latestnot'
         shell: bash
         run: |
           echo PKG_CONFIG_SYSROOT_DIR=${{ env.SYSROOT }} >> $GITHUB_ENV
