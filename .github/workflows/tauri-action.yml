@@ -73,7 +73,7 @@ jobs:
           location: D:\
           update: true
           install: >-
-            pkg-config mingw-w64-x86_64-gstreamer mingw-w64-x86_64-glib2 mingw-w64-x86_64-gtk3 mingw-w64-x86_64-intl
+            pkg-config mingw-w64-x86_64-gstreamer mingw-w64-x86_64-glib2 mingw-w64-x86_64-gtk3
           msystem: MINGW64
 
       - name: Get msys2 path
