@@ -115,8 +115,8 @@ jobs:
           # Get the MSYS2_ROOT environment variable (Windows-style path)
           MSYS2_ROOT_WIN="${MSYS2_ROOT}"
     
-          # Convert Windows path (D:/msys64/) to MSYS2-style path (/d/msys64/)
-          MSYS2_ROOT_MSYS2="/$(echo "$MSYS2_ROOT_WIN" | sed -E 's|^([A-Za-z]):/|/\L\1/|')$(echo "$MSYS2_ROOT_WIN" | sed -E 's|^[A-Za-z]:/||')"
+          # Convert the Windows path to MSYS2-style path
+          MSYS2_ROOT_MSYS2="/$(echo "$MSYS2_ROOT_WIN" | sed -E 's|^([A-Za-z]):/|/\L\1|')$(echo "$MSYS2_ROOT_WIN" | sed -E 's|^[A-Za-z]:/||')"
     
           # Set the MSYS2_ROOT in the environment as MSYS2-style path
           echo "MSYS2_ROOT=$MSYS2_ROOT_MSYS2" >> $GITHUB_ENV
