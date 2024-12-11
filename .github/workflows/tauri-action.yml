@@ -70,15 +70,27 @@ jobs:
             pkg-config mingw-w64-x86_64-gstreamer mingw-w64-x86_64-glib2
           msystem: MINGW64
 
+      - name: Get msys2 path
+        if: matrix.platform == 'windows-latest'
+        shell: pwsh 
+        run: | 
+          $msys2Root = msys2 -c 'cygpath -m /' 
+          echo "MSYS2_ROOT=$msys2Root" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
+      - name: Display msys2_root variable
+        if: matrix.platform == 'windows-latest'
+        run: echo $env:MSYS2_ROOT
+        shell: pwsh
+
       - name: Set up MSYS2 path
         if: matrix.platform == 'windows-latest'
         shell: bash
-        run: echo "${{ steps.msys2.outputs.msys2-location }}\usr\bin" >> "$GITHUB_PATH"
+        run: echo "${MSYS2_ROOT}usr/bin" >> "$GITHUB_PATH"
 
       - name: Set up MSYS2 path (other)
         if: matrix.platform == 'windows-latest'
         shell: bash
-        run: echo "${{ steps.msys2.outputs.msys2-location }}mingw64\bin" >> "$GITHUB_PATH"
+        run: echo "${MSYS2_ROOT}mingw64/bin" >> "$GITHUB_PATH"
 
       - name: install dependencies (ubuntu only)
         if: matrix.platform == 'ubuntu-22.04' # This must match the platform value defined above.
@@ -94,18 +106,6 @@ jobs:
       - name: Display PATH variable
         if: matrix.platform == 'windows-latest'
         run: echo $env:PATH
-        shell: pwsh
-
-      - name: Get msys2 path
-        if: matrix.platform == 'windows-latest'
-        shell: pwsh 
-        run: | 
-          $Env:MSYS2_ROOT = msys2 -c 'cygpath -m /' 
-          $Env:MSYS2_ROOT
-
-      - name: Display msys2_root variable
-        if: matrix.platform == 'windows-latest'
-        run: echo $env:MSYS2_ROOT
         shell: pwsh
 
       - uses: tauri-apps/tauri-action@v0
