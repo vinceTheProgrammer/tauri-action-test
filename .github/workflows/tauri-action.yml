@@ -76,7 +76,6 @@ jobs:
         run: | 
           $msys2Root = msys2 -c 'cygpath -m /' 
           echo "MSYS2_ROOT=$msys2Root" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-
       - name: Display msys2_root variable
         if: matrix.platform == 'windows-latest'
         run: echo $env:MSYS2_ROOT
@@ -108,9 +107,27 @@ jobs:
         run: echo $env:PATH
         shell: pwsh
 
+      - name: Convert MSYS2_ROOT from Windows path to MSYS2-style path
+        if: matrix.platform == 'windows-latest'
+        id: convert_msys2_root
+        shell: bash
+        run: |
+          # Get the MSYS2_ROOT environment variable (Windows-style path)
+          MSYS2_ROOT_WIN="${MSYS2_ROOT}"
+    
+          # Convert Windows path to MSYS2-style path by replacing drive letter and colon
+          MSYS2_ROOT_MSYS2="/$(echo "$MSYS2_ROOT_WIN" | sed -E 's/([A-Za-z]):/\/\L\1/')$(echo "$MSYS2_ROOT_WIN" | sed -E 's/^[A-Za-z]://')"
+    
+          # Set the MSYS2_ROOT in the environment as MSYS2-style path
+          echo "MSYS2_ROOT=$MSYS2_ROOT_MSYS2" >> $GITHUB_ENV
+    
+          # Debug output to verify the conversion
+          echo "Converted MSYS2_ROOT: $MSYS2_ROOT_MSYS2"
+
       - uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PKG_CONFIG_PATH: ${{ env.MSYS2_ROOT }}mingw64/lib/pkgconfig
         with:
           tagName: app-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version.
           releaseName: 'App v__VERSION__'
