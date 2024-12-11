@@ -82,6 +82,7 @@ jobs:
         run: | 
           $msys2Root = msys2 -c 'cygpath -m /' 
           echo "MSYS2_ROOT=$msys2Root" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
       - name: Display msys2_root variable
         if: matrix.platform == 'windows-latest'
         run: echo $env:MSYS2_ROOT
@@ -113,14 +114,25 @@ jobs:
         run: echo $env:PATH
         shell: pwsh
 
+      - name: Set up environment variables for Windows
+        if: matrix.platform == 'windows-latest'
+        shell: bash
+        run: |
+          echo PKG_CONFIG_PATH=/d/msys64/mingw64/lib/pkgconfig >> $GITHUB_ENV
+          echo LIBRARY_PATH=D:/msys64/mingw64/lib >> $GITHUB_ENV
+          echo LD_LIBRARY_PATH=D:/msys64/mingw64/lib >> $GITHUB_ENV
+          echo C_INCLUDE_PATH=D:/msys64/mingw64/include >> $GITHUB_ENV
+          echo CPLUS_INCLUDE_PATH=D:/msys64/mingw64/include >> $GITHUB_ENV
+
+      - name: Set up environment variables for macOS
+        if: matrix.platform == 'macos-latest'
+        shell: bash
+        run: |
+          echo PKG_CONFIG_SYSROOT_DIR=${{ env.SYSROOT }} >> $GITHUB_ENV
+
       - uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PKG_CONFIG_PATH: /d/msys64/mingw64/lib/pkgconfig
-          LIBRARY_PATH: D:/msys64/mingw64/lib
-          LD_LIBRARY_PATH: D:/msys64/mingw64/lib
-          C_INCLUDE_PATH: D:/msys64/mingw64/include
-          CPLUS_INCLUDE_PATH: D:/msys64/mingw64/include
         with:
           tagName: app-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version.
           releaseName: 'App v__VERSION__'
