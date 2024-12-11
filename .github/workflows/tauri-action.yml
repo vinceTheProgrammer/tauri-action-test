@@ -67,7 +67,7 @@ jobs:
           update: true
           install: >-
             pkg-config mingw-w64-x86_64-gstreamer mingw-w64-x86_64-glib2
-          msystem: MSYS
+          msystem: MINGW64
 
       - name: Set up MSYS2 path
         if: matrix.platform == 'windows-latest'
