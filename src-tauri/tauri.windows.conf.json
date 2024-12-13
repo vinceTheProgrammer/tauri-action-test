@@ -1,5 +1,7 @@
 {
     "bundle": {
-        "resources": ["./*.dll"]
+        "resources": {
+            "lib\\windows\\64\\*": "./"
+        }
     }
 }
