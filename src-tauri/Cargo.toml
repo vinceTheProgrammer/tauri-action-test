@@ -1,6 +1,6 @@
 [package]
 name = "tauri-action-testo"
-version = "0.1.9"
+version = "0.1.10"
 description = "A Tauri App"
 authors = ["you"]
 edition = "2021"
@@ -28,7 +28,8 @@ gstreamer = "0.23.3"
 incremental = true # Compile your binary in smaller steps.
 
 [profile.release]
-codegen-units = 1 # Allows LLVM to perform better optimization.
+strip = true # Ensures debug symbols are removed.
+# codegen-units = 1 # Allows LLVM to perform better optimization.
 # lto = true # Enables link-time-optimizations.
 # opt-level = "s" # Prioritizes small binary size. Use `3` if you prefer speed.
 # panic = "abort" # Higher performance by disabling panic handlers.
