@@ -28,10 +28,10 @@ gstreamer = "0.23.3"
 incremental = true # Compile your binary in smaller steps.
 
 [profile.release.build-override]
-lto = true # Enables link-time-optimizations.
-opt-level = 3 # Prioritizes small binary size. Use `3` if you prefer speed.
+opt-level = "z" # Prioritizes small binary size. Use `3` if you prefer speed.
 strip = true # Ensures debug symbols are removed.
 codegen-units = 1 # Allows LLVM to perform better optimization.
 
 [profile.release]
 panic = "abort" # Higher performance by disabling panic handlers.
+lto = true # Enables link-time-optimizations.
